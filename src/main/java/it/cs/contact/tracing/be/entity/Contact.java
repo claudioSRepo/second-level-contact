@@ -23,7 +23,7 @@ public class Contact {
 
 	@DynamoDBAttribute(attributeName = "communicated-on")
 	@JsonProperty
-	private int communicatedOn;
+	private Integer communicatedOn;
 
 	@Override
 	public String toString() {

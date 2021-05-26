@@ -24,9 +24,9 @@ public class SecondLevelContactRepository {
 		this.dbMapper = new DynamoDBMapper(AmazonDynamoDBClientBuilder.standard().build());
 	}
 
-	public List<Contact> getPositiveContactByDeviceKey(final String deviceKey) {
+	public List<Contact> getSecondLevelContactsByDeviceKey(final String deviceKey) {
 
-		logger.info("Get Positive contact By DeviceKey : {}", deviceKey);
+		logger.info("GetSecondLevelContactsByDeviceKey : {}", deviceKey);
 
 		try {
 

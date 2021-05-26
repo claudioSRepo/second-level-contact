@@ -7,14 +7,14 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import it.cs.contact.tracing.be.dto.LambdaResponse;
+import it.cs.contact.tracing.be.entity.Contact;
 import it.cs.contact.tracing.be.repository.SecondLevelContactRepository;
 import it.cs.contact.tracing.be.utils.Util;
-import it.cs.contact.tracing.be.entity.Contact;
 import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
+import static it.cs.contact.tracing.be.utils.Util.getFirst;
 
 public class Handler implements RequestHandler<APIGatewayProxyRequestEvent, LambdaResponse> {
 
@@ -73,8 +73,9 @@ public class Handler implements RequestHandler<APIGatewayProxyRequestEvent, Lamb
 
 		final String key = event.getPathParameters().getOrDefault("deviceKey", "");
 
-		final List<Contact> positiveContactEntities = secondLevelContactRepository.getPositiveContactByDeviceKey(key);
+		final Contact contactEntity =
+				getFirst(secondLevelContactRepository.getSecondLevelContactsByDeviceKey(key)).orElse(new Contact());
 
-		return LambdaResponse.builder().statusCode(HttpStatus.SC_OK).body(gson.toJson(positiveContactEntities)).build();
+		return LambdaResponse.builder().statusCode(HttpStatus.SC_OK).body(gson.toJson(contactEntity)).build();
 	}
 }
